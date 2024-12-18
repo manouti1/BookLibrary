@@ -25,13 +25,13 @@ jobs:
       # Build Docker image for API
       - name: Build Docker image for API
         run: |
-          docker build -f BookLibrary.Api/Dockerfile -t my-api-image .
+          docker build -f BookLibrary.Api/Dockerfile -t book-api-img .
 
       # Optionally, push the Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker tag my-api-image ${{ secrets.DOCKER_USERNAME }}/booklibrary-api:latest
+          docker tag book-api-img ${{ secrets.DOCKER_USERNAME }}/booklibrary-api:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/booklibrary-api:latest
 
       # Optionally deploy the Docker container (e.g., to AWS, Azure, or your server)
@@ -53,11 +53,11 @@ jobs:
       # Build Docker image for Tests
       - name: Build Docker image for Tests
         run: |
-          docker build -f BookLibrary.Tests/Dockerfile -t my-test-image .
+          docker build -f BookLibrary.Tests/Dockerfile -t book-test-img .
 
       # Run the tests
       - name: Run tests
         run: |
-          docker run --rm my-test-image
+          docker run --rm book-test-img
 
       # Optionally, save test results or report them
