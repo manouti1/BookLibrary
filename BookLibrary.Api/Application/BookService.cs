@@ -1,12 +1,13 @@
 ﻿using BookLibrary.Domain;
 using BookLibrary.Dtos;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookLibrary.Application
 {
     public interface IBookService
     {
-        Task<IEnumerable<Book>> GetAllBooksAsync();
-        Task<Book?> GetBookByIdAsync(int id);
+        Task<IEnumerable<BookDto>> GetAllBooksAsync();
+        Task<BookDto?> GetBookByIdAsync(int id);
         Task<int> AddBookAsync(BookDto book);
         Task UpdateBookAsync(BookDto book);
         Task DeleteBookAsync(int id);
@@ -22,14 +23,32 @@ namespace BookLibrary.Application
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Book>> GetAllBooksAsync()
+        public async Task<IEnumerable<BookDto>> GetAllBooksAsync()
         {
-            return await _repository.GetAllAsync();
+            var books = await _repository.GetAllAsync();
+            var booksDto = books.Select(b => new BookDto
+            {
+                Title = b.Title,
+                Author = b.Author,
+                ISBN = b.ISBN,
+                PublishedDate = b.PublishedDate
+            }).ToList();
+
+            return booksDto;
         }
 
-        public async Task<Book?> GetBookByIdAsync(int id)
+        public async Task<BookDto?> GetBookByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var book = await _repository.GetByIdAsync(id);
+            var booksDto = new BookDto
+            {
+                Title = book.Title,
+                Author = book.Author,
+                ISBN = book.ISBN,
+                PublishedDate = book.PublishedDate
+            };
+
+            return booksDto;
         }
 
         public async Task<int> AddBookAsync(BookDto dto)

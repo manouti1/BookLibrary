@@ -34,11 +34,7 @@ namespace BookLibrary.Tests
 
             // Simulate that the service layer returns a List<Book> and performs mapping to BookDto
             _mockService.Setup(service => service.GetAllBooksAsync())
-                .ReturnsAsync(new List<Book>
-                {
-                    new Book { Id = 1, Title = "Book 1", Author = "Author 1", ISBN = "123", PublishedDate = DateTime.Now },
-                    new Book { Id = 2, Title = "Book 2", Author = "Author 2", ISBN = "456", PublishedDate = DateTime.Now }
-                });
+                .ReturnsAsync(booksDto);
 
             // Act
             var result = await _controller.GetBooks();
@@ -59,7 +55,7 @@ namespace BookLibrary.Tests
 
             // Simulate that the service layer returns a Book and performs mapping to BookDto
             _mockService.Setup(service => service.GetBookByIdAsync(1))
-                .ReturnsAsync(book);
+                .ReturnsAsync(bookDto);
 
             // Act
             var result = await _controller.GetBook(1);
@@ -75,7 +71,7 @@ namespace BookLibrary.Tests
         public async Task GetBook_WithInvalidId_ReturnsNotFound()
         {
             // Arrange
-            _mockService.Setup(service => service.GetBookByIdAsync(It.IsAny<int>())).ReturnsAsync((Book)null);
+            _mockService.Setup(service => service.GetBookByIdAsync(It.IsAny<int>())).ReturnsAsync((BookDto)null);
 
             // Act
             var result = await _controller.GetBook(99);
