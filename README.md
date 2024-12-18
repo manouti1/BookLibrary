@@ -83,5 +83,7 @@ git clone https://github.com/yourusername/library-api.git
 cd library-api
 ```
 ## Run Migrations
+```bash
 dotnet ef migrations add InitialCreate
 dotnet ef database update
+```
