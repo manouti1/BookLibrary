@@ -5152,8 +5152,8 @@
     },
     "BookLibrary/1.0.0": {
       "type": "project",
-      "path": "../../../BookLibrary/BookLibrary.csproj",
-      "msbuildProject": "../../../BookLibrary/BookLibrary.csproj"
+      "path": "../BookLibrary.Api/BookLibrary.csproj",
+      "msbuildProject": "../BookLibrary.Api/BookLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5210,8 +5210,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\BookLibrary\\BookLibrary.csproj": {
-              "projectPath": "D:\\BookLibrary\\BookLibrary.csproj"
+            "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj": {
+              "projectPath": "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj"
             }
           }
         }

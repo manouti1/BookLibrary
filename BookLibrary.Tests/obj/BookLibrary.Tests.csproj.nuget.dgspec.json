@@ -4,14 +4,14 @@
     "D:\\New folder\\BookLibrary\\BookLibrary.Tests\\BookLibrary.Tests.csproj": {}
   },
   "projects": {
-    "D:\\BookLibrary\\BookLibrary.csproj": {
+    "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BookLibrary\\BookLibrary.csproj",
+        "projectUniqueName": "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj",
         "projectName": "BookLibrary",
-        "projectPath": "D:\\BookLibrary\\BookLibrary.csproj",
+        "projectPath": "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj",
         "packagesPath": "C:\\Users\\manou\\.nuget\\packages\\",
-        "outputPath": "D:\\BookLibrary\\obj\\",
+        "outputPath": "D:\\New folder\\BookLibrary\\BookLibrary.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 23.1\\Components\\Offline Packages",
@@ -160,8 +160,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\BookLibrary\\BookLibrary.csproj": {
-                "projectPath": "D:\\BookLibrary\\BookLibrary.csproj"
+              "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj": {
+                "projectPath": "D:\\New folder\\BookLibrary\\BookLibrary.Api\\BookLibrary.csproj"
               }
             }
           }
