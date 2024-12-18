@@ -1,3 +1,4 @@
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
@@ -9,15 +10,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Adjust the path if the .csproj file is in a subfolder
-COPY ["src/BookLibrary/BookLibrary.csproj", "./BookLibrary/"]
-RUN dotnet restore "./BookLibrary/BookLibrary.csproj"
+# Adjust the path based on your solution file (BookLibrary.Api)
+COPY ["BookLibrary.Api/BookLibrary.csproj", "./BookLibrary.Api/"]
+RUN dotnet restore "./BookLibrary.Api/BookLibrary.csproj"
 
 # Copy the remaining files into the container
 COPY . .
 
-# Set the working directory correctly
-WORKDIR "/src/BookLibrary"
+# Set the working directory correctly for building
+WORKDIR "/src/BookLibrary.Api"
 
 # Build the application
 RUN dotnet build "./BookLibrary.csproj" -c $BUILD_CONFIGURATION -o /app/build
