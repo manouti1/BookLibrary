@@ -3,10 +3,10 @@ name: Build, Test, and Deploy
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - main # Trigger the workflow on push to the main branch
   pull_request:
     branches:
-      - main  # Trigger the workflow on pull requests to the main branch
+      - main # Trigger the workflow on pull requests to the main branch
 
 jobs:
   # Job to build and deploy the API project
@@ -60,4 +60,4 @@ jobs:
         run: |
           docker run --rm book-test-img
 
-      # Optionally, save test results or report them
+    

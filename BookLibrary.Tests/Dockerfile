@@ -14,21 +14,18 @@ RUN dotnet restore "BookLibrary.Tests/BookLibrary.Tests.csproj"
 # Copy the rest of the source code (including test code)
 COPY . .
 
-# Build the test project
+# Build the test project (ensure the runtime config file is included)
 WORKDIR /src/BookLibrary.Tests
-RUN dotnet build -c Release
+RUN dotnet publish -c Release -o /app
 
-# Run the tests and make sure to produce the test DLL output
-RUN dotnet test --no-restore --verbosity normal
-
-# Final stage to produce the test output (optional)
+# Final stage to produce the test output
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
 
 # Set the working directory in the final stage
 WORKDIR /app
 
-# Copy the necessary test DLL from the build stage
-COPY --from=build /src/BookLibrary.Tests/bin/Release/net8.0/BookLibrary.Tests.dll .
+# Copy the necessary files from the build stage
+COPY --from=build /app .
 
 # Set the entrypoint to run the tests in the final container
 ENTRYPOINT ["dotnet", "BookLibrary.Tests.dll"]
