@@ -11,21 +11,28 @@ COPY ["BookLibrary.Api/BookLibrary.csproj", "BookLibrary/"]
 # Restore dependencies for the test project
 RUN dotnet restore "BookLibrary.Tests/BookLibrary.Tests.csproj"
 
-# Copy the rest of the source code (including test code)
-COPY . .
+# Copy the rest of the source code
+COPY . . 
 
-# Build the test project (ensure the runtime config file is included)
+# Build the test project
 WORKDIR /src/BookLibrary.Tests
-RUN dotnet publish -c Release -o /app
+RUN dotnet build -c Release
 
-# Final stage to produce the test output
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
+# Run the tests and generate test result report in xUnit format
+RUN dotnet test --no-restore --verbosity normal --logger "xunit;LogFileName=test-results.xml"
 
-# Set the working directory in the final stage
+# Final stage to produce the test output and include the runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+
+# Set the working directory
 WORKDIR /app
 
-# Copy the necessary files from the build stage
-COPY --from=build /app .
+# Copy the build artifacts (including the test DLL and test results)
+COPY --from=build /src/BookLibrary.Tests . 
 
-# Set the entrypoint to run the tests in the final container
+# Install the runtime
+RUN apt-get update && apt-get install -y \
+    aspnetcore-runtime-8.0
+
+# Set the entry point for running tests
 ENTRYPOINT ["dotnet", "BookLibrary.Tests.dll"]
