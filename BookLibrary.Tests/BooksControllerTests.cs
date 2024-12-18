@@ -42,8 +42,8 @@ namespace BookLibrary.Tests
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(booksDto, okResult.Value);
+            Assert.That(okResult.StatusCode, Is.EqualTo(200));
+            Assert.That(okResult.Value, Is.EqualTo(booksDto));
         }
 
         [Test]
@@ -63,8 +63,9 @@ namespace BookLibrary.Tests
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(bookDto, okResult.Value);
+
+            Assert.That(okResult.StatusCode, Is.EqualTo(200));
+            Assert.That(bookDto, Is.EqualTo(okResult.Value));
         }
 
         [Test]

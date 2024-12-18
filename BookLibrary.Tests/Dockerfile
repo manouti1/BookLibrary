@@ -18,5 +18,5 @@ COPY . .
 WORKDIR /src/BookLibrary.Tests
 RUN dotnet build -c Release
 
-# Run the tests and generate the test result report in xUnit format, ignoring warnings
-RUN dotnet test --no-restore --verbosity detailed --logger "xunit;LogFileName=test-results.xml" --warnaserror:false
+# Run the tests and generate the test result report in xUnit format
+RUN dotnet test --no-restore --verbosity detailed --logger "xunit;LogFileName=test-results.xml"
