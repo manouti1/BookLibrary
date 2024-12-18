@@ -63,7 +63,6 @@ namespace BookLibrary.Tests
             Assert.IsNotNull(okResult);
             Assert.That(okResult.StatusCode, Is.EqualTo(200));
 
-            // Correctly cast okResult.Value to BookDto
             var resultBookDto = okResult.Value as BookDto;
             Assert.IsNotNull(resultBookDto);
 
