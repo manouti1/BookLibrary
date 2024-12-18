@@ -51,11 +51,9 @@ namespace BookLibrary.Tests
         {
             // Arrange
             var bookDto = new BookDto { Title = "Book 1", Author = "Author 1", ISBN = "123", PublishedDate = DateTime.Now };
-            var book = new Book { Id = 1, Title = "Book 1", Author = "Author 1", ISBN = "123", PublishedDate = DateTime.Now };
 
-            // Simulate that the service layer returns a Book and performs mapping to BookDto
             _mockService.Setup(service => service.GetBookByIdAsync(1))
-                .ReturnsAsync(bookDto);
+                       .ReturnsAsync(bookDto);
 
             // Act
             var result = await _controller.GetBook(1);
@@ -63,9 +61,16 @@ namespace BookLibrary.Tests
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-
             Assert.That(okResult.StatusCode, Is.EqualTo(200));
-            Assert.That(bookDto, Is.EqualTo(okResult.Value));
+
+            // Correctly cast okResult.Value to BookDto
+            var resultBookDto = okResult.Value as BookDto;
+            Assert.IsNotNull(resultBookDto);
+
+            Assert.That(resultBookDto.Title, Is.EqualTo(bookDto.Title));
+            Assert.That(resultBookDto.Author, Is.EqualTo(bookDto.Author));
+            Assert.That(resultBookDto.ISBN, Is.EqualTo(bookDto.ISBN));
+            Assert.That(resultBookDto.PublishedDate, Is.EqualTo(bookDto.PublishedDate).Within(TimeSpan.FromSeconds(1))); // Account for potential millisecond differences
         }
 
         [Test]
