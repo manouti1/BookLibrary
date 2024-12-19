@@ -62,8 +62,6 @@ D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\System.Runtime.Cach
 D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\System.Security.Permissions.dll
 D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\System.Windows.Extensions.dll
-D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\xunit.abstractions.dll
-D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\xunit.core.dll
 D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\cs\Microsoft.TestPlatform.CoreUtilities.resources.dll
 D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\cs\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
 D:\New folder\BookLibrary\BookLibrary.Tests\bin\Debug\net8.0\de\Microsoft.TestPlatform.CoreUtilities.resources.dll

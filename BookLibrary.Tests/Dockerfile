@@ -1,5 +1,7 @@
-# Use a pre-built image with .NET runtime
-FROM mcr.microsoft.com/dotnet/runtime:8.0-aspnet AS base
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 
@@ -23,9 +25,5 @@ RUN dotnet publish "./BookLibrary.Tests.csproj" -c $BUILD_CONFIGURATION -o /app/
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
-
-# Copy only the test assembly
-COPY --from=publish /app/publish/BookLibrary.Tests.dll /app/
-
-# Entrypoint to run tests
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "BookLibrary.Tests.dll"]

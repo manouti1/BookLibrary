@@ -1,63 +1,69 @@
-name: Build, Test, and Deploy
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main # Trigger the workflow on push to the main branch
+      - main
   pull_request:
     branches:
-      - main # Trigger the workflow on pull requests to the main branch
+      - main
 
 jobs:
-  # Job to build and deploy the API project
-  build-and-deploy-api:
+  build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout the repository code
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Set up Docker Buildx (for multi-platform support)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
 
-      # Build Docker image for API
-      - name: Build Docker image for API
-        run: |
-          docker build -f BookLibrary.Api/Dockerfile -t book-api-img .
+      - name: Restore Dependencies
+        run: dotnet restore
 
-      # Optionally, push the Docker image to Docker Hub
-      - name: Push Docker image to Docker Hub
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker tag book-api-img ${{ secrets.DOCKER_USERNAME }}/booklibrary-api:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/booklibrary-api:latest
+      - name: Build Solution
+        run: dotnet build --configuration Release
 
-      # Optionally deploy the Docker container (e.g., to AWS, Azure, or your server)
-      # Add your deployment steps here if applicable
+      - name: Run Tests
+        run: dotnet test BookLibrary.Tests/BookLibrary.Tests.csproj --configuration Release --no-build --logger trx
 
-  # Job to build and run tests for the test project
-  build-and-run-tests:
+      - name: Upload Test Results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TestResults
+          path: **/TestResults/*.trx
+
+  docker-build-and-push:
     runs-on: ubuntu-latest
-
+    needs: build-and-test
     steps:
-      # Checkout the repository code
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Set up Docker Buildx (for multi-platform support)
-      - name: Set up Docker Buildx
+      - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Build Docker image for Tests
-      - name: Build Docker image for Tests
-        run: |
-          docker build -f BookLibrary.Tests/Dockerfile -t book-test-img .
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Run the tests
-      - name: Run tests
-        run: |
-          docker run --rm book-test-img
+      - name: Build and Push API Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: BookLibrary.Api/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/booklibrary:latest
 
-    
+      - name: Build and Push Tests Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: BookLibrary.Tests/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/booklibrary-tests:latest
