@@ -30,11 +30,11 @@ jobs:
         run: dotnet test BookLibrary.Tests/BookLibrary.Tests.csproj --configuration Release --no-build --logger trx
 
       - name: Upload Test Results
-        if: failure()
+        if: always() # Ensure results are uploaded even if tests fail
         uses: actions/upload-artifact@v3
         with:
           name: TestResults
-          path: **/TestResults/*.trx
+          path: "**/TestResults/*.trx"
 
   docker-build-and-push:
     runs-on: ubuntu-latest
